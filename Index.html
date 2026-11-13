@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiểm tra BIM — Buổi 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#f4f6f8; --surface:#fff; --fg:#17212b; --muted:#5b6b7a; --line:#dbe3ea;
+    --navy:#15304a; --teal:#1c7293; --accent:#e08e45; --sel:#e8f0f5; --bad:#c0392b;
+    --head:"Space Grotesk",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);line-height:1.55}
+  .wrap{max-width:780px;margin:0 auto;padding:28px 16px 70px}
+  header.hd{border-left:4px solid var(--accent);padding-left:14px;margin-bottom:20px}
+  .brand{font-family:var(--head);font-weight:700;letter-spacing:.14em;font-size:.78rem;color:var(--accent)}
+  h1{font-family:var(--head);font-weight:700;font-size:1.65rem;margin:.2rem 0 .3rem}
+  .sub{color:var(--muted);font-size:.93rem}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0}
+  label.fld{display:block;font-weight:600;margin:0 0 6px;font-size:.92rem}
+  input[type=text]{width:100%;border:1px solid var(--line);border-radius:9px;padding:10px;font-family:var(--body);font-size:.95rem;background:var(--bg);color:var(--fg)}
+  .row2{display:flex;gap:12px;flex-wrap:wrap}
+  .row2>div{flex:1;min-width:200px}
+  .sec{font-family:var(--head);font-weight:600;color:var(--teal);font-size:1.12rem;margin:28px 0 4px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  .q-num{font-family:var(--head);font-weight:700;color:var(--accent);font-size:.78rem}
+  .q-text{font-weight:600;margin:.15rem 0 .65rem}
+  .opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:9px;padding:9px 11px;margin-bottom:7px;cursor:pointer}
+  .opt:hover{background:var(--sel)}
+  .opt input{margin-top:3px;flex:none;accent-color:var(--teal)}
+  .opt .k{font-weight:700;color:var(--muted);flex:none}
+  textarea{width:100%;min-height:85px;border:1px solid var(--line);border-radius:9px;padding:10px;font-family:var(--body);font-size:.92rem;background:var(--bg);color:var(--fg);resize:vertical}
+  .essay p{font-weight:600;margin:0 0 8px}
+  .bar{position:sticky;bottom:0;margin-top:22px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:0 -4px 16px rgba(0,0,0,.06)}
+  .hint{color:var(--muted);font-size:.85rem}
+  .err{color:var(--bad);font-size:.85rem;font-weight:600}
+  button{font-family:var(--head);font-weight:600;font-size:.95rem;border-radius:9px;border:none;padding:11px 22px;cursor:pointer;background:var(--accent);color:#fff}
+  button:disabled{opacity:.6;cursor:default}
+  .done{text-align:center;padding:50px 16px}
+  .done .big{font-family:var(--head);font-weight:700;font-size:2.4rem;color:var(--teal);margin:.3rem 0}
+  .foot{color:var(--muted);font-size:.8rem;text-align:center;margin-top:28px}
+  [hidden]{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hd">
+    <div class="brand">PONTECH × HCM-UTE</div>
+    <h1>Kiểm tra BIM — Buổi 1</h1>
+    <div class="sub">Tổng quan về một dự án BIM · 16 câu trắc nghiệm + 3 câu tự luận</div>
+  </header>
+
+  <div id="form">
+    <div class="card">
+      <div class="row2">
+        <div><label class="fld" for="name">Họ và tên *</label><input type="text" id="name" autocomplete="name"></div>
+        <div><label class="fld" for="mssv">MSSV *</label><input type="text" id="mssv" autocomplete="off"></div>
+      </div>
+    </div>
+
+    <div class="sec">Phần 1 — Trắc nghiệm (16 câu)</div>
+    <div id="quiz"></div>
+
+    <div class="sec">Phần 2 — Tự luận (3 câu)</div>
+    <div id="essays"></div>
+
+    <div class="bar">
+      <div><span class="hint" id="hint">Trả lời xong bấm Nộp bài. Nộp một lần.</span><span class="err" id="err" hidden></span></div>
+      <button id="submit">Nộp bài</button>
+    </div>
+  </div>
+
+  <div id="thanks" class="done" hidden>
+    <div class="brand">PONTECH × HCM-UTE</div>
+    <div class="big" id="scoreText">Đã nộp!</div>
+    <p>Cảm ơn bạn đã hoàn thành bài kiểm tra. Bài đã được gửi cho giảng viên.</p>
+  </div>
+
+  <div class="foot">Chương trình đào tạo Pontech × Trường ĐH Công nghệ Kỹ thuật TP.HCM</div>
+</div>
+
+<script>
+var QUIZ=[
+ {q:"BIM là viết tắt của?",o:["Building Information Management","Building Information Modeling","Building Integrated Model","Bridge Information Model"]},
+ {q:"Theo khoá học, BIM gồm 4 yếu tố nào?",o:["Phần mềm – phần cứng – dữ liệu – tiền","Công cụ – Tài liệu – Con người – Quy trình","Revit – Civil 3D – Navisworks – ACC","3D – 4D – 5D – 6D"]},
+ {q:"Phát biểu nào đúng về BIM?",o:["BIM chính là phần mềm Revit","BIM chỉ là mô hình 3D để nhìn","Cách làm việc trên mô hình 3D gắn thông tin, dùng xuyên suốt vòng đời dự án","BIM chỉ dùng ở giai đoạn thiết kế"]},
+ {q:"Nếu chỉ áp dụng BIM ở giai đoạn thiết kế thì nên gọi là?",o:["Chi phí","Đầu tư","Lãng phí","Lợi nhuận"]},
+ {q:"CDE là viết tắt của?",o:["Central Data Engine","Common Data Environment","Cloud Data Exchange","Construction Data Entry"]},
+ {q:"Autodesk Forma trước đây có tên là?",o:["Autodesk Docs","BIM 360 Field","Autodesk Construction Cloud (ACC)","Autodesk Vault"]},
+ {q:"Thành phần CDE quản lý file (tên cũ Autodesk Docs) nay gọi là?",o:["Forma Design Collaboration","Forma Data Management","Forma Build","Forma Takeoff"]},
+ {q:"Để nhiều người cùng dựng một mô hình Revit trên cloud cần gói nào?",o:["Autodesk Docs","BIM Collaborate (bản thường)","BIM Collaborate Pro","AutoCAD LT"]},
+ {q:"Thứ tự đúng các giai đoạn của dự án?",o:["Thi công → Thiết kế → Vận hành → Chuẩn bị","Chuẩn bị → Thiết kế cơ sở → Thiết kế kỹ thuật/BVTC → Thi công → Vận hành","Thiết kế → Chuẩn bị → Thi công → O&M","Chuẩn bị → Thi công → Thiết kế → O&M"]},
+ {q:"Bên nào đặt yêu cầu thông tin (EIR) và hưởng lợi nhiều nhất ở vận hành?",o:["Nhà thầu thi công","Chủ đầu tư (Client/Owner)","Nhà cung cấp","Tư vấn thẩm tra"]},
+ {q:"\"4D\" và \"5D\" trong BIM lần lượt là?",o:["Vật liệu và nhân công","Tiến độ và Khối lượng/Chi phí","Chi phí và Chất lượng","An toàn và Môi trường"]},
+ {q:"ISO 19650 là?",o:["Tiêu chuẩn về bê tông","Chuẩn quốc tế về quản lý thông tin bằng BIM","Định dạng file CAD","Phần mềm của Autodesk"]},
+ {q:"TCVN 14177:2024 là?",o:["Tiêu chuẩn thép xây dựng","Tiêu chuẩn quốc gia VN về quản lý thông tin bằng BIM (theo ISO 19650)","Nghị định về đấu thầu","Hướng dẫn của Autodesk"]},
+ {q:"Văn bản nào phê duyệt lộ trình bắt buộc áp dụng BIM tại Việt Nam?",o:["QĐ 258/QĐ-TTg (2023)","QĐ 347/QĐ-BXD","TCVN 14177","NĐ 15/2021"]},
+ {q:"EIR là viết tắt của?",o:["Engineer Information Report","Exchange Information Requirements","Early Issue Review","Equipment Inspection Record"]},
+ {q:"IFC là gì?",o:["Một phần mềm dựng mô hình","Định dạng trao đổi dữ liệu BIM mở (buildingSMART)","Một loại hợp đồng","Tiêu chuẩn của Việt Nam"]}
+];
+var ESSAYS=[
+ "Nêu mối liên hệ Revit – ACC/Forma – Worksharing. File central đặt ở đâu khi làm trên cloud?",
+ "Kể 2 khó khăn của dự án metro đa quốc gia và vì sao cần thống nhất một nguyên tắc chung.",
+ "Vì sao giá trị của BIM lớn nhất ở giai đoạn vận hành (O&M)?"
+];
+var K=['A','B','C','D'];
+var quizEl=document.getElementById('quiz');
+QUIZ.forEach(function(it,i){
+  var opts=it.o.map(function(t,j){
+    return '<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"><span class="k">'+K[j]+'.</span><span>'+t+'</span></label>';
+  }).join('');
+  var d=document.createElement('div');d.className='card';
+  d.innerHTML='<div class="q-num">CÂU '+(i+1)+'</div><div class="q-text">'+it.q+'</div>'+opts;
+  quizEl.appendChild(d);
+});
+var essayEl=document.getElementById('essays');
+ESSAYS.forEach(function(q,i){
+  var d=document.createElement('div');d.className='card essay';
+  d.innerHTML='<p>'+(i+1)+'. '+q+'</p><textarea id="e'+i+'" aria-label="Tự luận '+(i+1)+'"></textarea>';
+  essayEl.appendChild(d);
+});
+var btn=document.getElementById('submit'), err=document.getElementById('err');
+btn.addEventListener('click',function(){
+  err.hidden=true;
+  var name=document.getElementById('name').value.trim();
+  var mssv=document.getElementById('mssv').value.trim();
+  if(!name||!mssv){ err.textContent='Vui lòng nhập Họ tên và MSSV.'; err.hidden=false; window.scrollTo({top:0,behavior:'smooth'}); return; }
+  var answers=[];
+  for(var i=0;i<QUIZ.length;i++){ var s=document.querySelector('input[name="q'+i+'"]:checked'); answers.push(s?parseInt(s.value,10):null); }
+  var blanks=answers.filter(function(a){return a===null;}).length;
+  if(blanks>0 && !btn.dataset.confirm){ err.textContent='Còn '+blanks+' câu chưa chọn. Bấm "Nộp bài" lần nữa để nộp như hiện tại.'; err.hidden=false; btn.dataset.confirm='1'; return; }
+  var essays=ESSAYS.map(function(_,i){return document.getElementById('e'+i).value.trim();});
+  btn.disabled=true; btn.textContent='Đang nộp…';
+  google.script.run
+    .withSuccessHandler(function(res){
+      document.getElementById('form').hidden=true;
+      var t=document.getElementById('thanks'); t.hidden=false;
+      if(res&&typeof res.score==='number'){ document.getElementById('scoreText').textContent='Điểm trắc nghiệm: '+res.score+'/'+res.total; }
+      window.scrollTo({top:0,behavior:'smooth'});
+    })
+    .withFailureHandler(function(e){
+      btn.disabled=false; btn.textContent='Nộp bài';
+      err.textContent='Lỗi khi nộp: '+(e&&e.message?e.message:'thử lại'); err.hidden=false;
+    })
+    .submitQuiz({name:name,mssv:mssv,answers:answers,essays:essays});
+});
+</script>
+</body>
+</html>
